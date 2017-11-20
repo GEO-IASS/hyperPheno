@@ -26,3 +26,5 @@ vignettes/*.pdf
 harvardsoc
 files
 tmp.R
+DN.RData
+DN.array.RData
