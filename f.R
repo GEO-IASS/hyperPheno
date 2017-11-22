@@ -200,3 +200,29 @@ getDT <- function(datadir= '/mnt/monsoon/data/archive/harvardbarnsoc',
   DT[,YMDHM:=format(DateTime, format = '%Y-%m-%d-%H-%M')]
   DT
 }
+
+
+
+plotSp <- function(w, 
+                   scc, 
+                   col = '#80808020', 
+                   g = 1:ncol(scc), 
+                   fun = median,
+                   sleep = NULL, 
+                   add = FALSE, 
+                   ylim=c(0, 0.035)){
+  
+  if(length(g)!=ncol(scc)) stop('group length does not match with spectral array')
+  gu <- unique(g)
+  ngu <- length(gu)
+  if(length(col)==1) col <- rep(col, n)
+  if(!add)plot(NA, type='n', xlim = range(w), ylim = ylim, col = col[1], 
+               xlab = 'w (nm)', ylab = 'Spectral coefficient (-)')
+  for(i in 1:ngu) {
+    ss <- scc[,g==gu[i]]
+    if(!is.null(dim(ss))) ss <- apply(ss, MARGIN = 1, FUN = fun, na.rm=T)
+    
+    lines(w, ss, col = col[i])
+    if(!is.null(sleep))Sys.sleep(sleep)
+  }
+}
